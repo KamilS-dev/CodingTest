@@ -20,7 +20,7 @@ public class ApplicationDbContext : DbContext
 
     public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
     {
-        var audits = this.GetAudits();
+        this.OnBeforeSaveChanges();
         var result = await base.SaveChangesAsync(cancellationToken);
 
         return result;
@@ -28,17 +28,17 @@ public class ApplicationDbContext : DbContext
 
     public override int SaveChanges()
     {
-        var audits = this.GetAudits();
+        this.OnBeforeSaveChanges();
         var result = base.SaveChanges();
 
         return result;
     }
 
-    private void OnBeforeSaveChanges(string userId)
+    private void OnBeforeSaveChanges()
     {
-        var auditlog = new AuditLog()
-        {
+        var audits = this.GetAudits();
 
-        };
+        // TODO
+        // save audit logs in AuditLog table
     }
 }
